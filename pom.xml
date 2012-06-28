@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.picketlink</groupId>
+	<artifactId>picketlink-installer</artifactId>
+	<version>2.1.2.Final</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<bundle.dir>${project.build.directory}/bundle</bundle.dir>
+		<installer.root.dir>/picketlink-installer-${project.version}</installer.root.dir>
+		<picketlink.version>2.1.2.Final</picketlink.version>
+		<picketlink.subsystem.version>1.1.0-SNAPSHOT</picketlink.subsystem.version>
+		<picketlink.console.version>1.0.0-SNAPSHOT</picketlink.console.version>
+		<jboss.as.version>7.1.1.Final</jboss.as.version>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.picketlink</groupId>
+			<artifactId>picketlink-core</artifactId>
+			<version>${picketlink.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.picketlink.distribution</groupId>
+			<artifactId>picketlink-jbas7</artifactId>
+			<version>${picketlink.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.picketlink</groupId>
+			<artifactId>jboss-as-security-picketlink</artifactId>
+			<version>${picketlink.subsystem.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.picketlink.quickstarts</groupId>
+			<artifactId>picketlink-quickstarts</artifactId>
+			<version>${picketlink.version}</version>
+			<classifier>webapps-jboss-as7</classifier>
+			<type>zip</type>
+		</dependency>
+		<dependency>
+			<groupId>org.picketlink</groupId>
+			<artifactId>picketlink-console</artifactId>
+			<version>${picketlink.console.version}</version>
+			<type>war</type>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>assembly-installer</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>attached</goal>
+						</goals>
+						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+							<finalName>picketlink-${picketlink.version}-installer</finalName>
+							<descriptors>
+								<descriptor>${basedir}/assembly.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
