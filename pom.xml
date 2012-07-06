@@ -34,6 +34,14 @@
 		</developer>
 	</developers>
 	
+	<licenses>
+		<license>
+			<name>lgpl</name>
+			<url>http://repository.jboss.org/licenses/lgpl-2.1.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	
 	<properties>
 		<picketlink.installer.scm.url>https://github.com/picketlink/picketlink-installer</picketlink.installer.scm.url>
 		<picketlink.installer.scm.connection>git@github.com:picketlink/picketlink-installer.git</picketlink.installer.scm.connection>	    
