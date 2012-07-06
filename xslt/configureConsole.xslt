@@ -15,7 +15,7 @@
 			</properties>
 
 			<resources>
-				<resource-root path="picketlink-console-1.0.0.Final.war" />
+				<resource-root path="picketlink-console-1.0.1-SNAPSHOT.war" />
 			</resources>
 
 			<dependencies>
