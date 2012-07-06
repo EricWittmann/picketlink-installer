@@ -65,10 +65,10 @@
         <dependencySet>
             <useTransitiveDependencies>false</useTransitiveDependencies>
             <includes>
-                <include>org.picketlink:jboss-as-security-picketlink</include>
+                <include>org.picketlink:picketlink-as7-extension</include>
             </includes>
             <outputDirectory>${installer.root.dir}/config/lib</outputDirectory>
-            <outputFileNameMapping>jboss-as-security-picketlink-${picketlink.subsystem.version}.jar</outputFileNameMapping>
+            <outputFileNameMapping>picketlink-as7-extension-${picketlink.subsystem.version}.jar</outputFileNameMapping>
         </dependencySet>
         <dependencySet>
             <useTransitiveDependencies>false</useTransitiveDependencies>
