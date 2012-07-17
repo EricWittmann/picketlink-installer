@@ -29,8 +29,8 @@
 			<security-domain name="picketlink-sts" cache-type="default">
 				<authentication>
 					<login-module code="UsersRoles" flag="required">
-						<module-option name="usersProperties" value="sts/users.properties" />
-						<module-option name="rolesProperties" value="sts/roles.properties" />
+						<module-option name="usersProperties" value="users.properties" />
+						<module-option name="rolesProperties" value="roles.properties" />
 					</login-module>
 				</authentication>
 				<audit>
