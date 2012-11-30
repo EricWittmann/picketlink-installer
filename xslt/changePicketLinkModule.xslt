@@ -12,8 +12,8 @@
 		<module xmlns="urn:jboss:module:1.1" name="org.picketlink">
 			<resources>
 				<resource-root path="picketlink-as7-extension-1.0.1.Final.jar" />
-				<resource-root path="picketlink-jbas7-2.1.6-SNAPSHOT.jar" />
-				<resource-root path="picketlink-core-2.1.6-SNAPSHOT.jar" />
+				<resource-root path="picketlink-jbas7-2.1.6.Final.jar" />
+				<resource-root path="picketlink-core-2.1.6.Final.jar" />
 			</resources>
 
 			<dependencies>
@@ -40,6 +40,9 @@
 				<module name="org.apache.log4j" />
 				<module name="org.apache.santuario.xmlsec" />
 				<module name="javax.api" />
+                                <module name="org.jboss.ws.api"/>
+                                <module name="org.jboss.ws.spi"/>
+                                <module name="org.apache.cxf"/>
 			</dependencies>
 		</module>
 	</xsl:template>
