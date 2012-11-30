@@ -25,8 +25,9 @@
 	<property name="picketlink.subsystem.lib.file" value="config/lib/picketlink-as7-extension-${picketlink.subsystem.version}.jar" />
 	<property name="picketlink.console.dist.file" value="config/lib/picketlink-console-${picketlink.console.version}.war" />
 	<property name="picketlink.quickstarts.dist.file" value="config/lib/picketlink-quickstarts-${picketlink.version}-webapps-jboss-as7.zip" />
+	<property name="picketlink.jboss.as.dist" value="config/xslt/${jboss.as.dist}" />
 
-	<target name="install" depends="prepare,backup-as7-files,install-picketlink,install-picketlink-subsystem,install-picketlink-audit-logging,install-picketlink-quickstarts,install-picketlink-console">
+	<target name="install" depends="prepare,backup-as7-files,install-picketlink,install-picketlink-subsystem,install-picketlink-audit-logging,install-picketlink-quickstarts,install-picketlink-console, install-picketlink-console-eap">
 		<echo>
 			################################################################
 		                       Thanks for using PicketLink.
@@ -53,7 +54,7 @@
 			    - PicketLink Console ${picketlink.console.version}
 			    - PicketLink Quickstarts ${picketlink.version}
 			####################################################################################
-		</echo>
+		</echo>		
 		<input message="Please enter the path to your JBoss Application Server 7 installation: " addproperty="jboss.as.dist.dir" />
 	</target>
 
@@ -79,7 +80,7 @@
 
 		<copy tofile="${jboss.as.dist.dir}/standalone/configuration/standalone.xml" file="${jboss.as.dist.dir}/standalone/configuration/standalone_picketlink_install.bkp" failonerror="false" overwrite="true" />
 
-		<xslt style="config/xslt/changePicketLinkModule.xslt" basedir="${jboss.as.dist.dir}/modules/org/picketlink/main" destdir="${jboss.as.dist.dir}/modules/org/picketlink/main" includes="module.xml" />
+		<xslt style="${picketlink.jboss.as.dist}/changePicketLinkModule.xslt" basedir="${jboss.as.dist.dir}/modules/org/picketlink/main" destdir="${jboss.as.dist.dir}/modules/org/picketlink/main" includes="module.xml" />
 		<move overwrite="true" todir="${jboss.as.dist.dir}/modules/org/picketlink/main">
 			<filelist dir="${jboss.as.dist.dir}/modules/org/picketlink/main">
 				<file name="module.html" />
@@ -94,7 +95,7 @@
 		<copy todir="${jboss.as.dist.dir}/modules/org/picketlink/main" file="${picketlink.subsystem.lib.file}" />
 
 		<!-- Add the PicketLink Extension -->
-		<xslt style="config/xslt/addExtension.xslt" basedir="${jboss.as.dist.dir}/standalone/configuration" destdir="${jboss.as.dist.dir}/standalone/configuration" includes="standalone.xml" />
+		<xslt style="${picketlink.jboss.as.dist}/addExtension.xslt" basedir="${jboss.as.dist.dir}/standalone/configuration" destdir="${jboss.as.dist.dir}/standalone/configuration" includes="standalone.xml" />
 		<move overwrite="true" todir="${jboss.as.dist.dir}/standalone/configuration">
 			<filelist dir="${jboss.as.dist.dir}/standalone/configuration">
 				<file name="standalone.html" />
@@ -103,7 +104,7 @@
 		</move>
 
 		<!-- Add an empty PicketLink Subsystem declaration -->
-		<xslt style="config/xslt/addSubsystem.xslt" basedir="${jboss.as.dist.dir}/standalone/configuration" destdir="${jboss.as.dist.dir}/standalone/configuration" includes="standalone.xml" />
+		<xslt style="${picketlink.jboss.as.dist}/addSubsystem.xslt" basedir="${jboss.as.dist.dir}/standalone/configuration" destdir="${jboss.as.dist.dir}/standalone/configuration" includes="standalone.xml" />
 		<move overwrite="true" todir="${jboss.as.dist.dir}/standalone/configuration">
 			<filelist dir="${jboss.as.dist.dir}/standalone/configuration">
 				<file name="standalone.html" />
@@ -116,7 +117,7 @@
 	<target name="install-picketlink-audit-logging" description="Installs the PicketLink Audit Logging">
 		<echo>Configuring the PicketLink Audit Logging ...</echo>
 		
-		<xslt style="config/xslt/addPicketLinkLogging.xslt" basedir="${jboss.as.dist.dir}/standalone/configuration" destdir="${jboss.as.dist.dir}/standalone/configuration" includes="standalone.xml" />
+		<xslt style="${picketlink.jboss.as.dist}/addPicketLinkLogging.xslt" basedir="${jboss.as.dist.dir}/standalone/configuration" destdir="${jboss.as.dist.dir}/standalone/configuration" includes="standalone.xml" />
 		<move overwrite="true" todir="${jboss.as.dist.dir}/standalone/configuration">
 			<filelist dir="${jboss.as.dist.dir}/standalone/configuration">
 				<file name="standalone.html" />
@@ -137,7 +138,7 @@
 
 	<target name="install-picketlink-quickstarts-security-domains" description="Installs the Security Domains for the PicketLink Quickstarts">
 		<echo>Configuring the Security Domains for the PicketLink Quickstarts ...</echo>
-		<xslt style="config/xslt/addSecurityDomain.xslt" basedir="${jboss.as.dist.dir}/standalone/configuration" destdir="${jboss.as.dist.dir}/standalone/configuration" includes="standalone.xml" />
+		<xslt style="${picketlink.jboss.as.dist}/addSecurityDomain.xslt" basedir="${jboss.as.dist.dir}/standalone/configuration" destdir="${jboss.as.dist.dir}/standalone/configuration" includes="standalone.xml" />
 		<move overwrite="true" todir="${jboss.as.dist.dir}/standalone/configuration">
 			<filelist dir="${jboss.as.dist.dir}/standalone/configuration">
 				<file name="standalone.html" />
@@ -146,12 +147,14 @@
 		</move>
 	</target>
 
-	<target name="install-picketlink-console" description="Installs the PicketLink Console">
+	<target name="install-picketlink-console" description="Installs the PicketLink Console" unless="jboss.as.enterprise">
 		<echo>Installing the PicketLink Console ...</echo>
 		
+		<delete file="${jboss.as.dist.dir}/modules/org/jboss/as/console/main/module.xml.bak" failonerror="false" />
+		<copy file="${jboss.as.dist.dir}/modules/org/jboss/as/console/main/module.xml" tofile="${jboss.as.dist.dir}/modules/org/jboss/as/console/main/module.xml.bak" />
 		<copy todir="${jboss.as.dist.dir}/modules/org/jboss/as/console/main" file="${picketlink.console.dist.file}" />
-
-		<xslt style="config/xslt/configureConsole.xslt" basedir="${jboss.as.dist.dir}/modules/org/jboss/as/console/main" destdir="${jboss.as.dist.dir}/modules/org/jboss/as/console/main" includes="module.xml" />
+		
+		<xslt style="${picketlink.jboss.as.dist}/configureConsole.xslt" basedir="${jboss.as.dist.dir}/modules/org/jboss/as/console/main" destdir="${jboss.as.dist.dir}/modules/org/jboss/as/console/main" includes="module.xml" />
 		<move overwrite="true" todir="${jboss.as.dist.dir}/modules/org/jboss/as/console/main">
 			<filelist dir="${jboss.as.dist.dir}/modules/org/jboss/as/console/main">
 				<file name="module.html" />
@@ -159,5 +162,20 @@
 			<mapper type="regexp" from="^(.*)\.html$$" to="\1.xml" />
 		</move>
 	</target>
+	
+	<target name="install-picketlink-console-eap" description="Installs the PicketLink Console" if="jboss.as.enterprise">
+			<echo>Installing the PicketLink Console ...</echo>
+			
+			<delete file="${jboss.as.dist.dir}/modules/org/jboss/as/console/main/module.xml.bak" failonerror="false" />
+			<copy todir="${jboss.as.dist.dir}/modules/org/jboss/as/console/eap" file="${picketlink.console.dist.file}" />
+
+			<xslt style="${picketlink.jboss.as.dist}/configureConsole.xslt" basedir="${jboss.as.dist.dir}/modules/org/jboss/as/console/eap" destdir="${jboss.as.dist.dir}/modules/org/jboss/as/console/eap" includes="module.xml" />
+			<move overwrite="true" todir="${jboss.as.dist.dir}/modules/org/jboss/as/console/eap">
+				<filelist dir="${jboss.as.dist.dir}/modules/org/jboss/as/console/eap">
+					<file name="module.html" />
+				</filelist>
+				<mapper type="regexp" from="^(.*)\.html$$" to="\1.xml" />
+			</move>
+		</target>
 
 </project>
