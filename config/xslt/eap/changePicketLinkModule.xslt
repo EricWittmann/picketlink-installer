@@ -12,8 +12,8 @@
 		<module xmlns="urn:jboss:module:1.1" name="org.picketlink">
 			<resources>
 				<resource-root path="picketlink-as7-extension-1.0.1.Final.jar" />
-				<resource-root path="picketlink-jbas7-2.1.7.Final.jar" />
-				<resource-root path="picketlink-core-2.1.7.Final.jar" />
+				<resource-root path="picketlink-jbas7-2.1.8-SNAPSHOT.jar" />
+				<resource-root path="picketlink-core-2.1.8-SNAPSHOT.jar" />
 			</resources>
 
 			<dependencies>
