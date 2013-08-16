@@ -13,7 +13,7 @@
 		match="//as:profile/sd:subsystem/sd:security-domains/sd:security-domain[@name='sp']" />
 
 	<xsl:template match="as:profile/sd:subsystem/sd:security-domains">
-		<security-domains>
+		<security-domains xmlns="urn:jboss:domain:security:1.1">
 			<security-domain name="idp" cache-type="default">
 				<authentication>
 					<login-module code="UsersRoles" flag="required">
